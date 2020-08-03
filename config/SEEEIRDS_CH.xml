@@ -1,0 +1,17 @@
+<MPI>
+		<NP>30</NP> <!-- number of processors to use-->
+</MPI>
+<ABC>
+	<G>0</G> <!-- number of generations of SMC to run, set to 1 if we just want rejection sampling, 0 to go forever -->
+	<T>100</T> <!-- minimum # of trials per generation -->
+	<A>100</A> <!-- minimum # of  acceptances per generation -->
+	<R>50</R> <!-- after each generation, the accepted distances will be sorted. this picks which distance to use as our new epsilon -->
+	<E>500</E> <!-- when our distances are LTE to this, we quit!-->
+	<cheat>0</cheat> <!-- (experimental... ignore for now) -->
+</ABC>
+<output>
+	<prefix>output/SEEEIRDS_CH.</prefix> <!-- output file prefix -->
+</output>
+<O>0	0	0	0	0	0	0	0	0	0	0	1	6	55	244	547	888	1204	1442	1629	1753	1822	1864	1899	1919	1935	1940
+0	0	0	0	0	0	0	0	0	0	0	10	67	300	720	1067	1387	1598	1775	1924	2030	2092	2139	2173	2202	2221	2234</O> <!-- our observed data-->
+<lib>SEEEIRDS_CH/SEEEIRDS_CH.so</lib> <!-- location of users' shared library -->

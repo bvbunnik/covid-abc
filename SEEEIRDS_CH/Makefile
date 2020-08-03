@@ -1,0 +1,15 @@
+include make.inc
+
+
+all: SEEEIRDS_CH.so SEEEIRDS_CH
+
+
+SEEEIRDS_CH.so:    SEEEIRDS_CH.so.cpp ../include/al3c.hpp
+	$(CPP) -shared $(CPPFLAGS) $(CPPINCLUDEFLAGS)  -o SEEEIRDS_CH.so -fPIC \
+		$(CPPLIBFLAGS) $<
+
+SEEEIRDS_CH: SEEEIRDS_CH.cpp
+	$(CPP) $(CPPFLAGS) $(CPPINCLUDEFLAGS) -o SEEEIRDS_CH $(CPPLIBFLAGS) $<
+
+clean:
+	-rm	SEEEIRDS_CH.so SEEEIRDS_CH

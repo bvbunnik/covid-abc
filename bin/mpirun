@@ -1,0 +1,15 @@
+#!/bin/bash
+
+os=`uname`
+
+if [[ $os == "Darwin" ]]
+then
+	bin/mpirun.darwin $@
+elif [[ $os == "Linux" ]]
+then
+	bin/mpirun.linux $@
+else
+	echo "Error! Cannot find 'mpirun' for this environment" 1>&2
+	exit 1
+fi
+
