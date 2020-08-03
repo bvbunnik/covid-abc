@@ -80,8 +80,8 @@ public:
                 }
 
             current_epsilon=MAX(current_epsilon,terminal_epsilon);
-            } MPI::COMM_WORLD.Bcast(&current_epsilon,1,MPI::FLOAT,0);
-            MPI::COMM_WORLD.Bcast(current[0]->d,size_of_mem*A,MPI::CHAR,0);
+            } MPI_Bcast(&current_epsilon,1,MPI_FLOAT,0,MPI_COMM_WORLD);
+	    MPI_Bcast(current[0]->d,size_of_mem*A,MPI_CHAR,0,MPI_COMM_WORLD);
 
     }
 
@@ -103,14 +103,14 @@ public:
                         perturb_scales);
         }
         for (uint r=0;r<NP;r++) { //need to broadcast the above matrices..
-            MPI::COMM_WORLD.Bcast(prior_density_vector+A_per_proc*r,A_per_proc,\
-                    MPI::FLOAT, r);
-            MPI::COMM_WORLD.Bcast(perturb_density_matrix+A_per_proc*A*r, \
-                    A_per_proc*A,MPI::FLOAT, r);
-        } MPI::COMM_WORLD.Allreduce(&prior_scales,&prior_scale,1,\
-                MPI::FLOAT,MPI_MAX);
-        MPI::COMM_WORLD.Allreduce(&perturb_scales,&perturb_scale,1,MPI::FLOAT,\
-                MPI_MAX);
+            MPI_Bcast(prior_density_vector+A_per_proc*r,A_per_proc,\
+		      MPI_FLOAT, r, MPI_COMM_WORLD);
+            MPI_Bcast(perturb_density_matrix+A_per_proc*A*r, \
+		      A_per_proc*A,MPI_FLOAT, r, MPI_COMM_WORLD);
+        } MPI_Allreduce(&prior_scales,&prior_scale,1,\
+			MPI_FLOAT,MPI_MAX, MPI_COMM_WORLD);
+        MPI_Allreduce(&perturb_scales,&perturb_scale,1,MPI_FLOAT,\
+		      MPI_MAX, MPI_COMM_WORLD);
 
         if (perturb_scale==0)
             perturb_scale=1;
@@ -136,9 +136,9 @@ public:
             *(current[np*A_per_proc+a]->w)/=sum_weight;
         }
         for (uint r=0;r<NP;r++)
-            MPI::COMM_WORLD.Bcast(\
+            MPI_Bcast(\
                     current[A_per_proc*r]->d,size_of_mem*A_per_proc, \
-                    MPI::CHAR,r);
+                    MPI_CHAR,r,MPI_COMM_WORLD);
 
         delete [] perturb_density_matrix;
         delete [] prior_density_vector;
@@ -268,8 +268,8 @@ public:
         }
 
         for (uint r=0;r<NP;r++)
-            MPI::COMM_WORLD.Bcast(last[A_per_proc*r]->d,\
-                    size_of_mem*A_per_proc, MPI::CHAR,r);
+            MPI_Bcast(last[A_per_proc*r]->d,\
+		      size_of_mem*A_per_proc, MPI_CHAR,r,MPI_COMM_WORLD);
 
         uint *t0=new uint[NP]();
 
@@ -300,9 +300,9 @@ public:
             for (uint r=0;r<NP;r++) {//can't point to ->d because that won't
                                      // necessarily be at the start 
                                      // (since we sorted the pointers)
-                MPI::COMM_WORLD.Bcast(proposed_data+\
+                MPI_Bcast(proposed_data+\
                         T_per_proc*r*size_of_mem,T_per_proc*size_of_mem,\
-                        MPI::CHAR,r);
+			  MPI_CHAR,r, MPI_COMM_WORLD);
             }
             last_epsilon=current_epsilon;
 

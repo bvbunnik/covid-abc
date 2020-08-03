@@ -19,7 +19,7 @@
 #include "../include/SMC.hpp"
 #include "../include/u01.hpp"
 
-uint np=0, NP=0, SIGNUM=0;
+uint np = 0, NP = 0, SIGNUM=0;
 
 int main (int argc, char *argv[] ) {
 
@@ -41,9 +41,10 @@ int main (int argc, char *argv[] ) {
     signal(SIGINT, signal_callback_handler);
 
     //get MPI running...
-    MPI::Init();
+    MPI_Init(NULL, NULL);
 	
-    np=MPI::COMM_WORLD.Get_rank(),  NP=MPI::COMM_WORLD.Get_size();
+    MPI_Comm_rank(MPI_COMM_WORLD, &np);
+    MPI_Comm_size(MPI_COMM_WORLD, &NP);
 	//std::cout << "np: " << np <<", NP: " << NP <<"\n";
 
     std::vector<char> buffer((std::istreambuf_iterator<char>(xmlfile)), \
@@ -114,7 +115,7 @@ int main (int argc, char *argv[] ) {
     delete [] rnd_array;
     // gracefully quit
 
-    MPI::Finalize();
+    MPI_Finalize();
 
     exit(EXIT_SUCCESS);
 }
