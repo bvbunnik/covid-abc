@@ -17,4 +17,4 @@ module load PrgEnv/gnu-9.2/openmpi-4.0.2
 export OMP_NUM_THREADS=1
 
 # -n is the total number of MPI processes - here: 5 x 64
-mpirun -n 1000 --mca routed radix bin/al3c config/SEEEIRDS_CH.xml
+mpirun -n 1000 bin/al3c config/SEEEIRDS_CH.xml

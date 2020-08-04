@@ -120,9 +120,9 @@ class SEEEIRDS_CH
                 f[i+(4*m_num_comps)] = m_sigma*y[i+(3*m_num_comps)] - m_gamma[i]*y[i+(4*m_num_comps)] - m_alpha[i]*y[i+(4*m_num_comps)]; //I
                 f[i+(5*m_num_comps)] = m_gamma[i]*y[i+(4*m_num_comps)] - m_omega*y[i+(6*m_num_comps)]; //R
                 f[i+(6*m_num_comps)] = m_alpha[i]*y[i+(4*m_num_comps)]; //D1
-                f[i+(7*m_num_comps)] = m_alpha[i]*y[i+(6*m_num_comps)]; //D2
-                f[i+(8*m_num_comps)] = m_alpha[i]*y[i+(7*m_num_comps)]; //D3
-                f[i+(9*m_num_comps)] = m_sigma*y[i+(3*m_num_comps)]; //cum. I
+                //f[i+(7*m_num_comps)] = m_alpha[i]*y[i+(6*m_num_comps)]; //D2
+                //f[i+(8*m_num_comps)] = m_alpha[i]*y[i+(7*m_num_comps)]; //D3
+                f[i+(7*m_num_comps)] = m_sigma*y[i+(3*m_num_comps)]; //cum. I
              }
         }
 };
@@ -209,9 +209,6 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
     //dr1 = (1.0/200.0)*3.0;
     //dr2 = (1.0/15000.0)*3.0;
     //double dr3 = (1.0/400.0)*3.0;
-    dr1 = dr1*3.0;
-    dr2 = dr2*3.0;
-    dr3 = dr3*3.0;
     alpha = {dr1, dr2, dr3, dr3, dr3, dr3, dr3, dr3, dr3,dr3, dr3, dr2, dr2,dr2,dr2,dr2,dr2,dr2,dr2,dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2, dr2};
 
 	
@@ -518,7 +515,7 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
 	double i0=0.0001;
 	
      //we want to have 3 E-compartments and 3 D-compartments so we need 4 (S,I,R,D,cumI) + 3 E compartments + 3 D-compartments = 10 comps:
-    state_type y(10*n_comp);
+    state_type y(8*n_comp);
     for(int i=0;i<Cv_comps;++i){
         y[i]= fCv_per_comp - (fCv_per_comp*i0); //S
         y[i+n_comp] = 0;    //E1
@@ -527,9 +524,9 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
         y[i+4*n_comp] = fCv_per_comp*i0; //I
         y[i+5*n_comp] = 0;  //R
         y[i+6*n_comp] = 0;  //D1
-        y[i+7*n_comp] = 0;  //D2
-        y[i+8*n_comp] = 0;  //D3
-        y[i+9*n_comp] = 0;  //cumI
+        y[i+7*n_comp] = 0;  //cumI
+        //y[i+8*n_comp] = 0;  //D3
+        //y[i+9*n_comp] = 0;  //cumI
     }
     for(int i=Cv_comps;i<Cv_comps+Cs_comps;++i){
         y[i]= fCs_per_comp - (fCs_per_comp*i0);
@@ -540,8 +537,8 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
         y[i+5*n_comp] = 0;
         y[i+6*n_comp] = 0;
         y[i+7*n_comp] = 0;
-        y[i+8*n_comp] = 0;
-        y[i+9*n_comp] = 0;
+        //y[i+8*n_comp] = 0;
+        //y[i+9*n_comp] = 0;
     }
     for(int i=Cv_comps+Cs_comps; i<Cv_comps+Cs_comps+NCv_comps; ++i){
         y[i]= fNCv_per_comp - (fNCv_per_comp*i0);
@@ -552,8 +549,8 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
         y[i+5*n_comp] = 0;
         y[i+6*n_comp] = 0;
         y[i+7*n_comp] = 0;
-        y[i+8*n_comp] = 0;
-        y[i+9*n_comp] = 0;
+        //y[i+8*n_comp] = 0;
+        //y[i+9*n_comp] = 0;
     }
     for(int i=Cv_comps+Cs_comps+NCv_comps; i<Cv_comps+Cs_comps+NCv_comps+NCs_comps; ++i){
         y[i]= fNCs_per_comp - (fNCs_per_comp*i0);
@@ -564,8 +561,8 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
         y[i+5*n_comp] = 0;
         y[i+6*n_comp] = 0;
         y[i+7*n_comp] = 0;
-        y[i+8*n_comp] = 0;
-        y[i+9*n_comp] = 0;
+        //y[i+8*n_comp] = 0;
+        //y[i+9*n_comp] = 0;
     }
     for(int i=Cv_comps+Cs_comps+NCv_comps+NCs_comps; i<n_comp; ++i){
         y[i]= fg_per_comp - (fg_per_comp*i0);
@@ -576,8 +573,8 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
         y[i+5*n_comp] = 0;
         y[i+6*n_comp] = 0;
         y[i+7*n_comp] = 0;
-        y[i+8*n_comp] = 0;
-        y[i+9*n_comp] = 0;
+        //y[i+8*n_comp] = 0;
+        //y[i+9*n_comp] = 0;
     }
     runge_kutta4< state_type > stepper;
     vector<double> times;
@@ -611,11 +608,11 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
 	}
 	for (int i = start_day; i<=lround(sample_time); i+=7){
 		double CH=0, NCH=0;
-		for(auto col = 401; col<=402; ++col){
+		for(auto col = 301; col<=302; ++col){
 			CH += y_vec[i][col];
 		}
 		CHD.push_back(lround(CH*5.5e6));
-		for(auto col = 403; col<=450; ++col){
+		for(auto col = 303; col<=350; ++col){
 			NCH += y_vec[i][col];
 		}
 		NCHD.push_back(lround(NCH*5.5e6));
