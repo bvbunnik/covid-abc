@@ -13,5 +13,7 @@
 	<prefix>output/SEEEIRDS_CH.</prefix> <!-- output file prefix -->
 </output>
 <O>1940
-2234</O> <!-- our observed data-->
+2234
+6
+4</O> <!-- our observed data-->
 <lib>SEEEIRDS_CH/SEEEIRDS_CH.so</lib> <!-- location of users' shared library -->

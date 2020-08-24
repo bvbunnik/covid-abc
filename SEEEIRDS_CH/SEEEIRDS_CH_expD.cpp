@@ -587,13 +587,13 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
     }
 	// Need output on care-home deaths and non-care-home deaths on a weekly basis.
 	// Simulation day 5 is end of week 3. After that output cum_death every 7 days for both CH and nCH.
-    // Need output on care-home deaths and non-care-home deaths on a weekly basis.
+    	// Need output on care-home deaths and non-care-home deaths on a weekly basis.
 	// End of simulation is always tp+12 weeks+22 days.
 	// We have 27 weeks of data, with week 27 = end of simulation.
 	// I.e sample_time = 27*7 = day 189.
 	// Thus sample_time - 189 is starting date / week. (If it exists)
 	int start_day = lround(sample_time) - 188;
-	vector<double> CHD, NCHD;
+	vector<double> CHD, NCHD,CHD1,NCHD1;
 	vector<double>::iterator it;
 	if (start_day < 0) {
 	// We have a problem in that the start day would be before we have data
@@ -617,8 +617,24 @@ void simulation(double r0, double r1, double r2, double r3, double r4, double r5
 		}
 		NCHD.push_back(lround(NCH*5.5e6));
 	}
-    cout << CHD.back() << "\n" << NCHD.back();
-	
+    	//Find peak D(t)
+    	for (int i = 0; i<=simtime; ++i){
+            double CH1=0, NCH1=0;
+            for (auto col = 301; col<=302; ++col){
+                    CH1 += y_vec[i][col];
+            }
+            CHD1.push_back(lround(CH1*5.5e6));
+            for (auto col = 303; col<=350; ++col){
+                    NCH1 += y_vec[i][col];
+            }
+            NCHD1.push_back(lround(NCH1*5.5e6));
+    	}
+    	vector<double> results;
+    	adjacent_difference(CHD1.begin(), CHD1.end(), CHD1.begin());
+    	auto it1 = max_element(std::begin(CHD1), std::end(CHD1));
+    	adjacent_difference(NCHD1.begin(), NCHD1.end(), NCHD1.begin());
+    	auto it2 = max_element(std::begin(NCHD1), std::end(NCHD1));
+    	cout << CHD.back() << "\n" <<  NCHD.back() << "\n" << (it1+1-begin(CHD1))/7 << "\n" << (it2+1-begin(NCHD1))/7;	
 //	vector<double> CHD, NCHD;
 //	for (int i = 5; i<=lround(sample_time); i+=7){
 //		double CH=0, NCH=0;
